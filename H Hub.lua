@@ -282,7 +282,7 @@ local function setupMoneySimulatorX()
 		Increment = 5,
 		Suffix = "JumpPower",
 		CurrentValue = 50,
-		Flag = "Slider1",
+		Flag = "Slider2",
 		Callback = function(Value)
 			player.Character.Humanoid.JumpPower = Value
 		end,
