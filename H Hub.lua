@@ -10,6 +10,7 @@ end
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local placeId = game.PlaceId
+local player = game:GetService("Players").LocalPlayer
 
 local Window = Rayfield:CreateWindow({
 	Name = "H Hub",
@@ -49,6 +50,7 @@ local Window = Rayfield:CreateWindow({
 local function setupMoneySimulatorX()
 	local Tabs = {
 		Main = Window:CreateTab("Main", 4483362458),
+		Misc = Window:CreateTab("Misc", 4483362458),
 		Info = Window:CreateTab("Info", 4483362458),
 	}
 
@@ -156,6 +158,30 @@ local function setupMoneySimulatorX()
 					wait(0.0001)
 				end
 			end
+		end,
+	})
+	
+	Tabs.Misc:CreateButton({
+		Name = "Collect RainbowBucks",
+		Callback = function()
+			for _, buck in game.Workspace:GetChildren() do
+				if string.match(buck.Name, "RainbowBuck%d+") then
+					player.Character.HumanoidRootPart.CFrame = buck.CFrame + Vector3.new(0, 1, 0)
+					wait(0.5)
+				end
+			end
+		end,
+	})
+	
+	Tabs.Misc:CreateSlider({
+		Name = "WalkSpeed",
+		Range = {16, 50},
+		Increment = 1,
+		Suffix = "Bananas",
+		CurrentValue = 16,
+		Flag = "Slider1",
+		Callback = function(Value)
+			player.Character.Humanoid.WalkSpeed = Value
 		end,
 	})
 	
