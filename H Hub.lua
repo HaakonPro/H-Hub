@@ -169,7 +169,7 @@ local function setupMoneySimulatorX()
 	
 	local SelectedOre = nil
 
-	Tabs.AutoOres:CreateDropdown({
+	Tabs.Mine:CreateDropdown({
 		Name = "Select Ore",
 		Options = OreNames, 
 		CurrentOption = "Silver",
