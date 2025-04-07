@@ -54,6 +54,11 @@ local function setupMoneySimulatorX()
 
 	local Toggles = {
 		AutoMoney = false,
+		AutoFillBag = false,
+		AutoPower = false,
+		AutoBag = false,
+		AutoRank = false,
+		AutoTier = false,
 	}
 
 	Tabs.Main:CreateToggle({
@@ -65,12 +70,95 @@ local function setupMoneySimulatorX()
 
 			if Toggles.AutoMoney then
 				while Toggles.AutoMoney do
-					game.ReplicatedStorage.BobuxEvent:FireServer()
+					game.ReplicatedStorage.GetMoney:FireServer()
 					wait(0.0001)
 				end
 			end
 		end,
 	})
+	
+	Tabs.Main:CreateToggle({
+		Name = "Auto Fill Bag",
+		CurrentValue = false,
+		Flag = "Toggle2",
+		Callback = function(Value)
+			Toggles.AutoFillBag = Value
+
+			if Toggles.AutoFillBag then
+				while Toggles.AutoFillBag do
+					game.ReplicatedStorage.FillMoney:FireServer()
+					wait(0.0001)
+				end
+			end
+		end,
+	})
+	
+	Tabs.Main:CreateLabel("Auto Buys")
+	
+	Tabs.Main:CreateToggle({
+		Name = "Auto Power",
+		CurrentValue = false,
+		Flag = "Toggle3",
+		Callback = function(Value)
+			Toggles.AutoPower = Value
+
+			if Toggles.AutoPower then
+				while Toggles.AutoPower do
+					game.ReplicatedStorage.UpgradePower:FireServer()
+					wait(0.0001)
+				end
+			end
+		end,
+	})
+	
+	Tabs.Main:CreateToggle({
+		Name = "Auto Bag",
+		CurrentValue = false,
+		Flag = "Toggle4",
+		Callback = function(Value)
+			Toggles.AutoBag = Value
+
+			if Toggles.AutoBag then
+				while Toggles.AutoBag do
+					game.ReplicatedStorage.UpgradeBag:FireServer()
+					wait(0.0001)
+				end
+			end
+		end,
+	})
+	
+	Tabs.Main:CreateToggle({
+		Name = "Auto Rank",
+		CurrentValue = false,
+		Flag = "Toggle5",
+		Callback = function(Value)
+			Toggles.AutoRank = Value
+
+			if Toggles.AutoRank then
+				while Toggles.AutoRank do
+					game.ReplicatedStorage.UpgradeRank:FireServer()
+					wait(0.0001)
+				end
+			end
+		end,
+	})
+	
+	Tabs.Main:CreateToggle({
+		Name = "Auto Tier",
+		CurrentValue = false,
+		Flag = "Toggle6",
+		Callback = function(Value)
+			Toggles.AutoTier = Value
+
+			if Toggles.AutoTier then
+				while Toggles.AutoTier do
+					game.ReplicatedStorage.TierUp:FireServer()
+					wait(0.0001)
+				end
+			end
+		end,
+	})
+	
 
 	Tabs.Info:CreateLabel("Info")
 	Tabs.Info:CreateParagraph({Title = "Creator", Content = "Haakon"})
