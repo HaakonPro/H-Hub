@@ -50,6 +50,7 @@ local Window = Rayfield:CreateWindow({
 local function setupMoneySimulatorX()
 	local Tabs = {
 		Main = Window:CreateTab("Main", 4483362458),
+		Mine = Window:CreateTab("Mine", 4483362458),
 		Misc = Window:CreateTab("Misc", 4483362458),
 		Info = Window:CreateTab("Info", 4483362458),
 	}
@@ -61,6 +62,7 @@ local function setupMoneySimulatorX()
 		AutoBag = false,
 		AutoRank = false,
 		AutoTier = false,
+		AutoMine = false,
 	}
 
 	Tabs.Main:CreateToggle({
@@ -161,6 +163,69 @@ local function setupMoneySimulatorX()
 		end,
 	})
 	
+	local OreNames = {
+		"ALL", "Silver", "Gold", "Diamond", "Ruby", "Gem", "Uranium", "Kryptonite", "Obsidian", "Unobtainium", "Bedrock", "Pumpkin", "Gift", "Egg"
+	}
+	
+	local SelectedOre = nil
+
+	Tabs.AutoOres:CreateDropdown({
+		Name = "Select Ore",
+		Options = OreNames, 
+		CurrentOption = "Silver",
+		MultipleOptions = false,
+		Flag = "Dropdown1",
+		Callback = function(Options)
+			local SelectedOption = type(Options) == "table" and Options[1] or Options 
+
+			print("Selected Option: " .. tostring(SelectedOption)) 
+
+			SelectedOre = SelectedOption
+
+			if SelectedOre then
+				print("Selected Ore: " .. SelectedOre)
+			else
+				print("Error: Ore not found!")
+			end
+		end
+	})
+	
+	Tabs.Mine:CreateToggle({
+		Name = "Auto Mine",
+		CurrentValue = false,
+		Flag = "Toggle7",
+		Callback = function(Value)
+			Toggles.AutoMine = Value
+
+			if Toggles.AutoMine then
+				while Toggles.AutoMine do
+					wait(0.0001)
+					local last = math.huge
+					local closest = "nil"
+					local hrp = player.Character.HumanoidRootPart
+					for i,v in pairs(game.Workspace.Ores:GetChildren()) do
+						if v:FindFirstChild("TouchIntrest") and v.Transparency < 0.81 and string.match(v.Gui.HPBar.HP.Text, '%d+') ~= "0" and not(string.find(string.lower(v.Gui.HPBar.HP.Text), "wait")) then
+							if string.find(string.lower(v.Name), string.lower(SelectedOre) or SelectedOre == "ALL") then
+								local mag = (hrp.Position - v.Position).magnitude
+								if mag > last then
+									last = mag
+									closest = v
+								end
+							end
+						end
+					end
+					if closest ~= "nil" then
+						firetouchinterest(hrp, closest, 1)
+						firetouchinterest(hrp, closest, 0)
+						firetouchinterest(hrp, closest, 1)
+						firetouchinterest(hrp, closest, 0)
+					end
+				end
+			end
+		end,
+	})
+	
+	
 	Tabs.Misc:CreateButton({
 		Name = "Collect RainbowBucks",
 		Callback = function()
@@ -173,15 +238,53 @@ local function setupMoneySimulatorX()
 		end,
 	})
 	
+	Tabs.Misc:CreateButton({
+		Name = "Redeem all Codes",
+		Callback = function()
+			local Codes = {
+				"1millionrobloxians", -- 1.25x Money
+				"typicalmoneysimulatorxcode", -- 500 Gems + 25 Research Points
+				"10000", -- 1.25x money + 25 Research Points
+				"freegemsplease", -- 500 Gems
+				"newcode", -- 1.25x Money
+				"justonebuck", -- 1.5x Money
+				"rainbow colours", -- Rainbow Buck
+				"omgsecretcode", -- 1.2x Money
+				"dontresetmygold", -- Tier 6 Needed 2.5k Gold + 25 Diamond Crystals
+				"ThanksForHalfMillionVisits", -- 1.25x Money
+				"yay new layout", -- 2.5k Click Points + 25 Research Points
+				"homesweethome", -- 600s Played Required 1.3x Money + 500$ + 30 Research Points
+				"moneysimxawesome" -- 1.25x Money
+
+			}
+			for i = 1, 13, 1 do
+				game:GetService("ReplicatedStorage").RedeemCode:FireServer(Codes[i])
+				wait(0.1)
+			end
+		end,
+	})
+	
 	Tabs.Misc:CreateSlider({
 		Name = "WalkSpeed",
 		Range = {16, 50},
 		Increment = 1,
-		Suffix = "Bananas",
+		Suffix = "WalkSpeed",
 		CurrentValue = 16,
 		Flag = "Slider1",
 		Callback = function(Value)
 			player.Character.Humanoid.WalkSpeed = Value
+		end,
+	})
+	
+	Tabs.Misc:CreateSlider({
+		Name = "JumpPower",
+		Range = {50, 250},
+		Increment = 5,
+		Suffix = "JumpPower",
+		CurrentValue = 50,
+		Flag = "Slider1",
+		Callback = function(Value)
+			player.Character.Humanoid.JumpPower = Value
 		end,
 	})
 	
