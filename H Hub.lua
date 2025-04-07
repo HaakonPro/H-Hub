@@ -72,7 +72,7 @@ end
 
 
 -- Game selection
-if placeId == 6628835921 then
+if placeId == 66288359212 then
 	setupMoneySimulatorX()
 elseif placeId == 6193882657 then
 	setupMoneySimulator1_4_0()
