@@ -63,6 +63,7 @@ local function setupMoneySimulatorX()
 		AutoRank = false,
 		AutoTier = false,
 		AutoMine = false,
+		AutoDigitalMoney = false,
 	}
 
 	Tabs.Main:CreateToggle({
@@ -97,7 +98,7 @@ local function setupMoneySimulatorX()
 		end,
 	})
 	
-	Tabs.Main:CreateLabel("Auto Buys")
+	Tabs.Main:CreateSection("Auto Buys")
 	
 	Tabs.Main:CreateToggle({
 		Name = "Auto Power",
@@ -162,23 +163,43 @@ local function setupMoneySimulatorX()
 			end
 		end,
 	})
+
+	Tabs.Main:CreateToggle({
+		Name = "Auto Digital Money",
+		CurrentValue = false,
+		Flag = "Toggle7",
+		Callback = function(Value)
+			Toggles.AutoTier = Value
+
+			if Toggles.AutoTier then
+				while Toggles.AutoTier do
+					game.ReplicatedStorage.TierUp:FireServer()
+					wait(0.0001)
+				end
+			end
+		end,
+	})
+
+	if game:GetService("Players").LocalPlayer.PlayerGui.GameGui.DigitalFrame.GenerateBtn.Button.Text == "Generate" then
+                game:GetService("ReplicatedStorage").GenerateDigitalMoney:FireServer()
+            end
 	
 	local OreNames = {
-		"ALL", "Silver", "Gold", "Diamond", "Ruby", "Gem", "Uranium", "Kryptonite", "Obsidian", "Unobtainium", "Bedrock", "Pumpkin", "Gift", "Egg"
+		"ALL", "Silver", "Gold", "Diamond", "Ruby", "Gem", "Uranium",
+		"Kryptonite", "Obsidian", "Unobtainium", "Bedrock", "Pumpkin", "Gift", "Egg"
 	}
-	
-	local SelectedOre = nil
+
+	local SelectedOre = "Silver"
 
 	Tabs.Mine:CreateDropdown({
 		Name = "Select Ore",
-		Options = OreNames, 
+		Options = OreNames,
 		CurrentOption = "Silver",
 		MultipleOptions = false,
 		Flag = "Dropdown1",
 		Callback = function(Options)
-			local SelectedOption = type(Options) == "table" and Options[1] or Options 
-
-			print("Selected Option: " .. tostring(SelectedOption)) 
+			local SelectedOption = type(Options) == "table" and Options[1] or Options
+			print("Selected Option: " .. tostring(SelectedOption))
 
 			SelectedOre = SelectedOption
 
@@ -189,7 +210,7 @@ local function setupMoneySimulatorX()
 			end
 		end
 	})
-	
+
 	Tabs.Mine:CreateToggle({
 		Name = "Auto Mine",
 		CurrentValue = false,
@@ -197,32 +218,46 @@ local function setupMoneySimulatorX()
 		Callback = function(Value)
 			Toggles.AutoMine = Value
 
-			if Toggles.AutoMine then
+			local player = game.Players.LocalPlayer
+
+			task.spawn(function()
 				while Toggles.AutoMine do
-					wait(0.0001)
-					local last = math.huge
-					local closest = "nil"
-					local hrp = player.Character.HumanoidRootPart
-					for i,v in pairs(game.Workspace.Ores:GetChildren()) do
-						if v:FindFirstChild("TouchIntrest") and v.Transparency < 0.81 and string.match(v.Gui.HPBar.HP.Text, '%d+') ~= "0" and not(string.find(string.lower(v.Gui.HPBar.HP.Text), "wait")) then
-							if string.find(string.lower(v.Name), string.lower(SelectedOre) or SelectedOre == "ALL") then
-								local mag = (hrp.Position - v.Position).magnitude
-								if mag > last then
-									last = mag
-									closest = v
+					task.wait(0.1)
+
+					local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+					if not hrp then continue end
+
+					local closest, closestDistance = nil, math.huge
+
+					for _, ore in ipairs(game.Workspace.Ores:GetChildren()) do
+						if ore:IsA("BasePart") and ore:FindFirstChild("Gui") and ore:FindFirstChild("TouchInterest") then
+							local hpText = ore.Gui:FindFirstChild("HPBar") and ore.Gui.HPBar:FindFirstChild("HP") and ore.Gui.HPBar.HP.Text or ""
+							local hpValue = tonumber(hpText:match("%d+")) or 0
+
+							if ore.Transparency < 0.81 and hpValue > 0 and not hpText:lower():find("wait") then
+								if SelectedOre == "ALL" or ore.Name:lower():find(SelectedOre:lower()) then
+									local dist = (hrp.Position - ore.Position).Magnitude
+									if dist < closestDistance then
+										closest = ore
+										closestDistance = dist
+									end
 								end
 							end
 						end
 					end
-					if closest ~= "nil" then
-						firetouchinterest(hrp, closest, 1)
+
+					if closest then
+						closest.CanCollide = false
 						firetouchinterest(hrp, closest, 0)
+						task.wait(0.05)
 						firetouchinterest(hrp, closest, 1)
+						task.wait(0.05)
 						firetouchinterest(hrp, closest, 0)
+						task.wait(0.05)
 					end
 				end
-			end
-		end,
+			end)
+		end
 	})
 	
 	
@@ -285,6 +320,7 @@ local function setupMoneySimulatorX()
 		Flag = "Slider2",
 		Callback = function(Value)
 			player.Character.Humanoid.JumpPower = Value
+			player.Character.Humanoid.UseJumpPower = true
 		end,
 	})
 	
