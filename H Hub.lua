@@ -19,11 +19,11 @@ local Window = Rayfield:CreateWindow({
 	LoadingSubtitle = "by Haakon",
 	Theme = "Default",
 
-	DisableRayfieldPrompts = false,
+	DisableRayfieldPrompts = true,
 	DisableBuildWarnings = false,
 
 	ConfigurationSaving = {
-		Enabled = true,
+		Enabled = false,
 		FolderName = true,
 		FileName = "H Hub"
 	},
@@ -81,7 +81,7 @@ local function setupMoneySimulatorX()
 			end
 		end,
 	})
-	
+
 	Tabs.Main:CreateToggle({
 		Name = "Auto Fill Bag",
 		CurrentValue = false,
@@ -97,9 +97,9 @@ local function setupMoneySimulatorX()
 			end
 		end,
 	})
-	
+
 	Tabs.Main:CreateSection("Auto Buys")
-	
+
 	Tabs.Main:CreateToggle({
 		Name = "Auto Power",
 		CurrentValue = false,
@@ -115,7 +115,7 @@ local function setupMoneySimulatorX()
 			end
 		end,
 	})
-	
+
 	Tabs.Main:CreateToggle({
 		Name = "Auto Bag",
 		CurrentValue = false,
@@ -131,7 +131,7 @@ local function setupMoneySimulatorX()
 			end
 		end,
 	})
-	
+
 	Tabs.Main:CreateToggle({
 		Name = "Auto Rank",
 		CurrentValue = false,
@@ -147,7 +147,7 @@ local function setupMoneySimulatorX()
 			end
 		end,
 	})
-	
+
 	Tabs.Main:CreateToggle({
 		Name = "Auto Tier",
 		CurrentValue = false,
@@ -181,9 +181,9 @@ local function setupMoneySimulatorX()
 	})
 
 	if game:GetService("Players").LocalPlayer.PlayerGui.GameGui.DigitalFrame.GenerateBtn.Button.Text == "Generate" then
-                game:GetService("ReplicatedStorage").GenerateDigitalMoney:FireServer()
-            end
-	
+		game:GetService("ReplicatedStorage").GenerateDigitalMoney:FireServer()
+	end
+
 	local OreNames = {
 		"ALL", "Silver", "Gold", "Diamond", "Ruby", "Gem", "Uranium",
 		"Kryptonite", "Obsidian", "Unobtainium", "Bedrock", "Pumpkin", "Gift", "Egg"
@@ -259,8 +259,8 @@ local function setupMoneySimulatorX()
 			end)
 		end
 	})
-	
-	
+
+
 	Tabs.Misc:CreateButton({
 		Name = "Collect RainbowBucks",
 		Callback = function()
@@ -272,7 +272,7 @@ local function setupMoneySimulatorX()
 			end
 		end,
 	})
-	
+
 	Tabs.Misc:CreateButton({
 		Name = "Redeem all Codes",
 		Callback = function()
@@ -298,7 +298,7 @@ local function setupMoneySimulatorX()
 			end
 		end,
 	})
-	
+
 	Tabs.Misc:CreateSlider({
 		Name = "WalkSpeed",
 		Range = {16, 50},
@@ -310,7 +310,7 @@ local function setupMoneySimulatorX()
 			player.Character.Humanoid.WalkSpeed = Value
 		end,
 	})
-	
+
 	Tabs.Misc:CreateSlider({
 		Name = "JumpPower",
 		Range = {50, 250},
@@ -323,7 +323,7 @@ local function setupMoneySimulatorX()
 			player.Character.Humanoid.UseJumpPower = true
 		end,
 	})
-	
+
 
 	Tabs.Info:CreateLabel("Info")
 	Tabs.Info:CreateParagraph({Title = "Creator", Content = "Haakon"})
@@ -2753,19 +2753,680 @@ local function setupMoneyClickerInc()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/hassanxzayn-lua/Anti-afk/main/antiafkbyhassanxzyn"))();
 end
 
+local function setupMoneySimulatorUnlimited()
+	local Tabs = {
+		Main = Window:CreateTab("Main", 4483362458),
+		AutoOres = Window:CreateTab("Auto Ores", 4483362458),
+		Misc = Window:CreateTab("Misc", 4483362458),
+		Info = Window:CreateTab("Info", 4483362458),
+	}
 
--- Game selection
-if placeId == 6628835921 then
-	setupMoneySimulatorX()
-elseif placeId == 6193882657 then
-	setupMoneySimulator1_4_0()
-elseif placeId == 14082247421 then
-	setupMoneySimulatorZ()
-elseif placeId == 18408132742 then
-	setupMoneyClickerInc()
-else
-	local Tab = Window:CreateTab("Unsupported Game", 4483362458)
-	Tab:CreateLabel("This game isn't supported yet.")
-	Tab:CreateLabel("Contact haakonyt on discord if you want to see it added!")
+	local Toggles = {
+		AutoElectric = false,
+	}
+
+	Tabs.Main:CreateParagraph({Title = "Info", Content = "You can only have 1 auto at a time"})
+
+	Tabs.Main:CreateToggle({
+		Name = "Auto Electric",
+		CurrentValue = false,
+		Flag = "Toggle1",
+		Callback = function(Value)
+			Toggles.AutoElectric = Value
+
+			if Toggles.AutoElectric then
+				while Toggles.AutoElectric do
+					game:GetService("ReplicatedStorage").Events.ElectricBox:FireServer()
+					wait(0.0001)
+				end   
+			end
+		end,
+	})
+
+	Tabs.Info:CreateLabel("Info", 4483362458, Color3.fromRGB(35,35,35), false)
+	Tabs.Info:CreateParagraph({Title = "Creator", Content = "Haakon"})
+	Tabs.Info:CreateParagraph({Title = "Created/Updated", Content = "24/1/2025 | 18/3/2025"})
+	Tabs.Info:CreateParagraph({Title = "Discord", Content = "haakonyt"})
+
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/hassanxzayn-lua/Anti-afk/main/antiafkbyhassanxzyn"))();
 end
 
+local function setupBobuxSimulator()
+	local RS = game:GetService("ReplicatedStorage")
+	local Events = RS.Events:WaitForChild("ClientEvents")
+
+	local Tabs = {
+		Main = Window:CreateTab("Main", 4483362458),
+		AutoOres = Window:CreateTab("Auto Ores", 4483362458),
+		Factory = Window:CreateTab("Factory", 4483362458),
+		Misc = Window:CreateTab("Misc", 4483362458),
+		GameData = Window:CreateTab("GameData", 4483362458),
+		Info = Window:CreateTab("Info", 4483362458),
+	}
+
+	local Toggles = {
+		AutoMoney = false,
+		AutoSell = false,
+		UpgBag = false,
+		UpgFist = false,
+		AutoRank = false,
+		AutoTier = false,
+		AutoMine = false,
+		AutoMerge = false
+	}
+
+	local function FormatNumber(value)
+		if value < 1000 then
+			return tostring(value)
+		end
+
+		local scaleIndex = math.floor(math.log10(value) / 3)
+		local scales = game.Workspace:FindFirstChild("NumberScales")
+		if scales and scales:FindFirstChild(scaleIndex) then
+			local scaled = value / (1000 ^ scaleIndex)
+			return string.format("%.2f%s", scaled, scales[scaleIndex].Value)
+		else
+			return tostring(value)
+		end
+	end
+
+
+
+	Tabs.Main:CreateParagraph({Title = "Info", Content = "You can only have 1 auto at a time"})
+	local BagData = Tabs.GameData:CreateParagraph({Title = "Area | Bag", Content = "Area 0 | 0/0 | Value"})
+	local OreData = Tabs.GameData:CreateParagraph({Title = "Ores", Content = "None | 0/0"})
+
+	local function FindBestArea()
+		local bestArea = 1
+		local Power = player.Stats.PowerStat.Value
+		local BagData = game:GetService("ReplicatedStorage").BagData
+		local PlrBest = player.Stats.AreasBought.Value + 1
+
+		for _, bag in pairs(BagData:GetChildren()) do
+			if bag.AreaID.Value == PlrBest then
+				return tostring(PlrBest)
+			end
+			if Power >= bag.BagHealth.Value then continue end
+			bestArea = bag.AreaID.Value
+			break
+		end
+		return tostring(bestArea-1)
+	end
+
+	local AreaNames = {
+		"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15",
+		"16", "17", "18"
+	}
+
+	local SelectedArea = FindBestArea()
+
+	local AreaDropDown = Tabs.Main:CreateDropdown({
+		Name = "Select Area [Best Unlocked]",
+		Options = AreaNames,
+		CurrentOption = SelectedArea,
+		MultipleOptions = false,
+		Flag = "Dropdown1",
+		Callback = function(Options)
+			local SelectedOption = type(Options) == "table" and Options[1] or Options
+			--print("Selected Option: " .. tostring(SelectedOption))
+
+			SelectedArea = SelectedOption
+
+			if SelectedArea then
+				--print("Selected Area: " .. SelectedArea)
+				Toggles.AutoMoney = false
+				Toggles.AutoMoney = true
+			else
+				print("Error: Area not found!")
+			end
+		end
+	})
+
+	local AutoMoney = Tabs.Main:CreateToggle({
+		Name = "Auto Money",
+		CurrentValue = false,
+		Flag = "Toggle1",
+		Callback = function(Value)
+			Toggles.AutoMoney = Value
+
+			if Toggles.AutoMoney then
+				while Toggles.AutoMoney do
+					local char = player.Character or player.CharacterAdded:Wait()
+					local root = char:WaitForChild("HumanoidRootPart")
+
+					local currentArea = SelectedArea
+					local Area
+					repeat
+						Area = workspace.GameMap.GameBags:FindFirstChild("Area"..currentArea)
+						task.wait(0.1)
+					until Area or not Toggles.AutoMoney
+					if not Toggles.AutoMoney then break end
+
+					local Bag
+					repeat
+						if SelectedArea ~= currentArea then
+							Bag = nil
+							break
+						end
+
+						for _, obj in ipairs(Area:GetChildren()) do
+							if obj:FindFirstChild("Health") and obj.Health.Value > 0 then
+								if not obj:FindFirstChild("Gems") then
+									Bag = obj
+									break
+								end
+							end
+						end
+						task.wait(0.1)
+					until Bag or not Toggles.AutoMoney
+					if not Toggles.AutoMoney then break end
+					if not Bag then continue end
+
+					while Bag and Bag.Health.Value > 0 and Toggles.AutoMoney do
+						if not Toggles.AutoMoney then return end
+						if SelectedArea ~= currentArea then
+							Bag = nil
+							break
+						end
+						if not Bag:IsDescendantOf(Area) then break end
+
+						Events.HitBag:FireServer(Bag)
+						BagData:Set({Title = "Area | Bag", Content = "Area "..SelectedArea.." | " .. FormatNumber(Bag.Health.Value) .. "/" .. FormatNumber(Bag.StartHealth.Value)})
+						--print("Current Area: "..currentArea .. " Selected Area: "..SelectedArea)
+						task.wait(0.01)
+					end
+					task.wait(0.01)
+				end
+			end
+		end,
+	})
+
+
+	Tabs.Main:CreateToggle({
+		Name = "Auto Sell",
+		CurrentValue = false,
+		Flag = "Toggle2",
+		Callback = function(Value)
+			Toggles.AutoSell = Value
+
+			if Toggles.AutoSell then
+				while Toggles.AutoSell do
+					game:GetService("ReplicatedStorage").Events.ClientEvents.FillBag:FireServer()
+					wait(0.0001)
+				end   
+			end
+		end,
+	})
+
+	Tabs.Main:CreateToggle({
+		Name = "Auto Upg Bag",
+		CurrentValue = false,
+		Flag = "Toggle3",
+		Callback = function(Value)
+			Toggles.UpgBag = Value
+
+			if Toggles.UpgBag then
+				while Toggles.UpgBag do
+					game:GetService("ReplicatedStorage").Events.ClientEvents.BuyBag:FireServer()
+					wait(0.0001)
+				end   
+			end
+		end,
+	})
+
+	Tabs.Main:CreateToggle({
+		Name = "Auto Upg Fist",
+		CurrentValue = false,
+		Flag = "Toggle4",
+		Callback = function(Value)
+			Toggles.UpgFist = Value
+
+			if Toggles.UpgFist then
+				while Toggles.UpgFist do
+					--local bestArea = FindBestArea()
+					--AreaDropDown:Set(bestArea)
+					game:GetService("ReplicatedStorage").Events.ClientEvents.BuyFist:FireServer()
+					wait(0.0001)
+				end   
+			end
+		end,
+	})
+
+	Tabs.Main:CreateToggle({
+		Name = "Auto Rank",
+		CurrentValue = false,
+		Flag = "Toggle5",
+		Callback = function(Value)
+			Toggles.AutoRank = Value
+
+			if Toggles.AutoRank then
+				while Toggles.AutoRank do
+					local price = game:GetService("ReplicatedStorage").Ranks[player.Stats.Rank.Value+1].Bobux.Value
+					local money = player.Stats.Bobux.Value
+					if money >= price then
+						local bestArea = FindBestArea()
+						AreaDropDown:Set(bestArea)
+						game:GetService("ReplicatedStorage").Events.ClientEvents.Rebirth:FireServer()
+					end
+					wait(0.0001)
+				end   
+			end
+		end,
+	})
+
+	Tabs.Main:CreateToggle({
+		Name = "Auto Tier",
+		CurrentValue = false,
+		Flag = "Toggle6",
+		Callback = function(Value)
+			Toggles.AutoTier = Value
+
+			if Toggles.AutoTier then
+				while Toggles.AutoTier do
+					local prices = {1000000, 10000000000, 500000000000000, 10000000000000000000, 1e+24, 1e+30, 1e+39, 1e+60, 1e+300}
+					local price = prices[player.Stats.Tier.Value+1]
+					local money = player.Stats.Bobux.Value
+					if money >= price then
+						local bestArea = FindBestArea()
+						AreaDropDown:Set(bestArea)
+						game:GetService("ReplicatedStorage").Events.ClientEvents.Tier:FireServer()
+					end
+					wait(0.0001)
+				end   
+			end
+		end,
+	})
+
+	local OreNames = {
+		"AmethystBobux", "AmethystBobux2", "AmethystBobux3", "AmethystBobux4",
+		"BobuxCrystal", "BobuxCrystal2", "BobuxCrystal3", "BobuxOre", "BobuxOre2",
+		"BobuxOre3", "BobuxOre4", "BobuxRock", "BobuxRock2", "BobuxRock3",
+		"BobuxRock4", "BobuxRock5", "DiamondBobux", "DiamondBobux2", "DiamondBobux3",
+		"DiamondBobux4", "GoldBobux", "GoldBobux2", "GoldBobux3", "GoldBobux4",
+		"QuartsBobux", "RubyBobux", "RubyBobux2", "RubyBobux3", "RubyBobux4",
+		"RubyBobux5", "SilverBobux", "SilverBobux2", "SilverBobux3", "SilverBobux4"
+	}
+
+	local SelectedOre = "BobuxRock"
+
+	Tabs.AutoOres:CreateDropdown({
+		Name = "Select Ore",
+		Options = OreNames,
+		CurrentOption = SelectedOre,
+		MultipleOptions = false,
+		Flag = "Dropdown2",
+		Callback = function(Options)
+			local SelectedOption = type(Options) == "table" and Options[1] or Options
+			print("Selected Option: " .. tostring(SelectedOption))
+
+			SelectedOre = SelectedOption
+
+			if SelectedOre then
+				print("Selected Ore: " .. SelectedOre)
+				Toggles.AutoMine = false
+				Toggles.AutoMine = true
+			else
+				print("Error: Ore not found!")
+			end
+		end
+	})
+
+	Tabs.AutoOres:CreateToggle({
+		Name = "Auto Mine",
+		CurrentValue = false,
+		Flag = "Toggle7",
+		Callback = function(Value)
+			Toggles.AutoMine = Value
+
+			if Toggles.AutoMine then
+				while Toggles.AutoMine do
+					local player = game.Players.LocalPlayer
+					local char = player.Character or player.CharacterAdded:Wait()
+					local root = char:WaitForChild("HumanoidRootPart")
+					local Ores = workspace.Ores
+					local ore
+					repeat 
+						for _, obj in ipairs(Ores:GetChildren()) do
+							if obj.Name == SelectedOre and obj:FindFirstChild("Health") and obj.Health.Value > 0 then
+								ore = obj
+								break
+							end
+						end
+						task.wait(0.1)
+					until ore or not Toggles.AutoMine
+					if not ore then
+						print("ore not found", ore)
+						return
+					end
+					if not workspace[player.Name]:FindFirstChild("Pickaxe") then
+						workspace[player.Name].Humanoid:EquipTool(game.Players.LocalPlayer.Backpack.Pickaxe)
+					end
+					--	root.CFrame = ore.CFrame * CFrame.new(0, 5, 0)
+					while ore.Health.Value >= 1 do
+						if not workspace[player.Name]:FindFirstChild("Pickaxe") then
+							workspace[player.Name].Humanoid:EquipTool(game.Players.LocalPlayer.Backpack.Pickaxe)
+						end
+						ore.MineOre:FireServer(ore)
+						OreData:Set({Title = "Ores", Content = SelectedOre.." | " .. FormatNumber(ore.Health.Value) .. "/"..FormatNumber(ore.StartHealth.Value)})
+						task.wait(0.001)
+					end
+					task.wait(0.01)
+				end   
+			end
+		end,
+	})
+
+	Tabs.Factory:CreateToggle({
+		Name = "Auto Merge",
+		CurrentValue = false,
+		Flag = "Toggle_AutoMerge",
+		Callback = function(Value)
+			Toggles.AutoMerge = Value
+			if Toggles.AutoMerge then
+				while Toggles.AutoMerge do
+					local splitData = string.split(player.Stats.MergeGrid.Value, ":")
+					local lastIndex = {}
+
+					for i = 1, #splitData do
+						local value = tonumber(splitData[i])
+						if value and value ~= 0 then
+							if lastIndex[value] then
+								Events.Merge:FireServer(lastIndex[value], i)
+								lastIndex[value] = nil
+								task.wait(0.1)
+							else
+								lastIndex[value] = i
+							end
+						end
+					end
+					task.wait(0.1)
+				end
+			end
+		end,
+	})
+
+	Tabs.Info:CreateLabel("Info", 4483362458, Color3.fromRGB(35,35,35), false)
+	Tabs.Info:CreateParagraph({Title = "Creator", Content = "Haakon"})
+	Tabs.Info:CreateParagraph({Title = "Created/Updated", Content = "24/1/2025 | 18/3/2025"})
+	Tabs.Info:CreateParagraph({Title = "Discord", Content = "haakonyt"})
+
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/hassanxzayn-lua/Anti-afk/main/antiafkbyhassanxzyn"))();
+end
+
+local function setupSpaceIncremental()
+	local RS = game:GetService("ReplicatedStorage")
+	local Events = RS:WaitForChild("Events")
+
+	local Tabs = {
+		Main = Window:CreateTab("Main", 4483362458),
+		Info = Window:CreateTab("Info", 4483362458),
+	}
+
+	local Toggles = {
+		AutoCollect = false,
+	}
+
+	Tabs.Main:CreateToggle({
+		Name = "Auto Collect",
+		CurrentValue = false,
+		Flag = "Toggle1",
+		Callback = function(Value)
+			Toggles.AutoCollect = Value
+
+			if Toggles.AutoCollect then
+				task.spawn(function()
+					while Toggles.AutoCollect do
+						local char = player.Character or player.CharacterAdded:Wait()
+						local root = char:WaitForChild("HumanoidRootPart")
+						local objects = workspace:WaitForChild("Objects")
+						local grid = workspace:WaitForChild("Grid"):WaitForChild("MainGrid")
+
+
+
+						for _, obj in ipairs(objects:GetChildren()) do
+							if obj:IsA("BasePart") then
+								grid.CFrame = root.CFrame - Vector3.new(0, -7, 0)
+								grid.Transparency = 1
+								grid.CanCollide = false
+								obj.CFrame = root.CFrame
+							end
+						end
+
+						task.wait(0.1)
+					end
+				end)
+			end
+		end,
+	})
+
+
+	Tabs.Info:CreateLabel("Info", 4483362458, Color3.fromRGB(35,35,35), false)
+	Tabs.Info:CreateParagraph({Title = "Creator", Content = "Haakon"})
+	Tabs.Info:CreateParagraph({Title = "Created/Updated", Content = "24/1/2025 | 18/3/2025"})
+	Tabs.Info:CreateParagraph({Title = "Discord", Content = "haakonyt"})
+
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/hassanxzayn-lua/Anti-afk/main/antiafkbyhassanxzyn"))();
+end
+
+local function setupANormalButtonSimulator()
+	local player = game.Players.LocalPlayer
+	local Buttons = {}
+	local SelectedButton = "Multiplier[1]"
+	local Toggles = { AutoButton = false }
+
+	local Tabs = {
+		Main = Window:CreateTab("Main", 4483362458),
+		Info = Window:CreateTab("Info", 4483362458),
+	}
+
+	-- Custom order for non-multiplier buttons
+	local OtherOrder = {"Rebirth", "Studs", "Wood", "Stone", "Iron",
+		"Crystal", "Silver", "Gold", "Quartz", "Jade",
+		"Platinum", "Obsidian"}
+
+	-- Refresh buttons table in the correct order
+	local function refreshButtons()
+		Buttons = {}
+
+		-- 1️⃣ Collect all buttons
+		local allButtons = {}
+		for _, b in ipairs(workspace.Buttons:GetChildren()) do
+			table.insert(allButtons, b.Name)
+		end
+
+		-- 2️⃣ Multiplier buttons first, sorted numerically
+		local multipliers = {}
+		for _, name in ipairs(allButtons) do
+			if name:match("^Multiplier%[%d+%]$") then
+				table.insert(multipliers, name)
+			end
+		end
+		table.sort(multipliers, function(a, b)
+			local na = tonumber(a:match("%[(%d+)%]")) or 0
+			local nb = tonumber(b:match("%[(%d+)%]")) or 0
+			return na < nb
+		end)
+		for _, name in ipairs(multipliers) do table.insert(Buttons, name) end
+
+		-- 3️⃣ Add the rest of the buttons in your specified order
+		for _, baseName in ipairs(OtherOrder) do
+			-- find all buttons that start with this baseName
+			local variants = {}
+			for _, name in ipairs(allButtons) do
+				if name:match("^" .. baseName) then
+					table.insert(variants, name)
+				end
+			end
+			-- optional: sort variants numerically if they have numbers
+			table.sort(variants, function(a, b)
+				local na = tonumber(a:match("%[(%d+)%]")) or 0
+				local nb = tonumber(b:match("%[(%d+)%]")) or 0
+				return na < nb
+			end)
+			for _, name in ipairs(variants) do
+				if not table.find(Buttons, name) then
+					table.insert(Buttons, name)
+				end
+			end
+		end
+
+		-- 4️⃣ Update dropdown dynamically
+		if Tabs.Main.Dropdowns and Tabs.Main.Dropdowns["Dropdown1"] then
+			Tabs.Main.Dropdowns["Dropdown1"]:Refresh(Buttons)
+		end
+	end
+
+	-- Initial refresh
+	refreshButtons()
+
+	-- Update buttons when workspace changes
+	workspace.Buttons.ChildAdded:Connect(refreshButtons)
+	workspace.Buttons.ChildRemoved:Connect(refreshButtons)
+
+	-- Dropdown to select button
+	Tabs.Main:CreateDropdown({
+		Name = "Select Button",
+		Options = Buttons,
+		CurrentOption = SelectedButton,
+		MultipleOptions = false,
+		Flag = "Dropdown1",
+		Callback = function(Option)
+			SelectedButton = type(Option) == "table" and Option[1] or Option
+		end,
+	})
+
+	-- Auto-button toggle
+	Tabs.Main:CreateToggle({
+		Name = "Auto Buttons",
+		CurrentValue = false,
+		Flag = "Toggle1",
+		Callback = function(Value)
+			Toggles.AutoButton = Value
+			if Value then
+				task.spawn(function()
+					while Toggles.AutoButton do
+						local char = player.Character or player.CharacterAdded:Wait()
+						local hrp = char:WaitForChild("HumanoidRootPart")
+						local model = workspace.Buttons:FindFirstChild(SelectedButton)
+						if model then
+							for _, obj in ipairs(model:GetDescendants()) do
+								if obj:IsA("TouchTransmitter") then
+									pcall(function()
+										firetouchinterest(hrp, obj.Parent, 0)
+									end)
+								end
+							end
+						end
+						task.wait(0.1)
+					end
+				end)
+			end
+		end,
+	})
+
+	-- Info tab
+	Tabs.Info:CreateLabel("Info", 4483362458, Color3.fromRGB(35,35,35), false)
+	Tabs.Info:CreateParagraph({Title = "Creator", Content = "Haakon"})
+	Tabs.Info:CreateParagraph({Title = "Created/Updated", Content = "24/1/2025 | 18/3/2025"})
+	Tabs.Info:CreateParagraph({Title = "Discord", Content = "haakonyt"})
+
+	-- Anti-AFK
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/hassanxzayn-lua/Anti-afk/main/antiafkbyhassanxzyn"))()
+end
+
+local function setupTreeCuttingIncremental()
+	local player = game.Players.LocalPlayer
+	local Buttons = {}
+	local SelectedButton = "Multiplier[1]"
+	local Toggles = {
+		AutoCut = false,
+		AutoMine = false
+	}
+
+	local Tabs = {
+		Main = Window:CreateTab("Main", 4483362458),
+		Info = Window:CreateTab("Info", 4483362458),
+	}
+	
+	Tabs.Main:CreateToggle({
+		Name = "Auto Cut",
+		CurrentValue = false,
+		Flag = "Toggle1",
+		Callback = function(Value)
+			Toggles.AutoCut = Value
+			if Value then
+				task.spawn(function()
+					while Toggles.AutoCut do
+						local hrp = player.Character.HumanoidRootPart
+						for _, model in ipairs(workspace.Objects:GetChildren()) do
+							if model:IsA("Model") then
+								local success, err = pcall(function()
+									model:PivotTo(hrp.CFrame)
+									game:GetService("ReplicatedStorage").Events.CutTree:FireServer(tonumber(model.Name))
+								end)
+								if not success then
+									warn("Failed to move", model.Name, err)
+								end
+							end
+						end
+						task.wait(0.1)
+					end
+				end)
+			end
+		end,
+	})
+	
+	Tabs.Main:CreateToggle({
+		Name = "Auto Mine",
+		CurrentValue = false,
+		Flag = "Toggle2",
+		Callback = function(Value)
+			Toggles.AutoMine = Value
+			if Value then
+				task.spawn(function()
+					while Toggles.AutoMine do
+						for _, model in ipairs(workspace.Objects2:GetChildren()) do
+							game:GetService("ReplicatedStorage").Events.Mine:FireServer(tonumber(model.Name))
+						end
+						task.wait(0.1)
+					end
+				end)
+			end
+		end,
+	})
+	
+	-- Info tab
+	Tabs.Info:CreateLabel("Info", 4483362458, Color3.fromRGB(35,35,35), false)
+	Tabs.Info:CreateParagraph({Title = "Creator", Content = "Haakon"})
+	Tabs.Info:CreateParagraph({Title = "Created/Updated", Content = "24/1/2025 | 18/3/2025"})
+	Tabs.Info:CreateParagraph({Title = "Discord", Content = "haakonyt"})
+
+	-- Anti-AFK
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/hassanxzayn-lua/Anti-afk/main/antiafkbyhassanxzyn"))()
+end
+
+
+
+
+
+local gameSetups = {
+	[6628835921] = {setup = setupMoneySimulatorX, name = "Money Simulator X"},
+	[6193882657] = {setup = setupMoneySimulator1_4_0, name = "Money Simulator 1.4.0"},
+	[14082247421] = {setup = setupMoneySimulatorZ, name = "Money Simulator Z"},
+	[18408132742] = {setup = setupMoneyClickerInc, name = "Money Clicker Incremental"},
+	[103792194096848] = {setup = setupMoneySimulatorUnlimited, name = "Money Simulator Unlimited"},
+	[12487959457] = {setup = setupBobuxSimulator, name = "Bobux Simulator"},
+	[108659785491574] = {setup = setupSpaceIncremental, name = "Space Incremental"},
+	[105955468345181] = {setup = setupANormalButtonSimulator, name = "A Normal Button Simulator"},
+	[104785855204405] = {setup = setupTreeCuttingIncremental, name = "Tree Cutting Incremental"}
+}
+
+local info = gameSetups[game.PlaceId]
+if info then
+	info.setup()
+	print("Loaded game: " .. info.name)
+else
+	local tab = Window:CreateTab("Unsupported Game", 4483362458)
+	tab:CreateLabel("This game isn't supported yet.")
+	tab:CreateLabel("Contact haakonyt on Discord if you want it added!")
+end
